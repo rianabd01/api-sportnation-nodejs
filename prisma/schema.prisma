@@ -16,5 +16,25 @@ datasource db {
 model Product {
   productId   Int      @id @default(autoincrement())
   name        String
+  price       Int
+  description String
+  stockQuantity    Int
+}
+
+
+model customer {
+  customerId        Int      @id @default(autoincrement())
+  fullName  String
+  address   String
+  email     String
+  phoneNumber String
+  username  String
+  password  String
+}
+
+model cart {
+  cartId      Int     @id @default(autoincrement())
+  customerId  Int
   quantity    Int
+  productId   Int
 }
