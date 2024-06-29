@@ -10,6 +10,7 @@ Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 ### Usage
 
 - open the terminal and run "pnpm install"
+- setting .env (example ".env.example")
 - run "pnpm run dev" for development
 - open url
 
@@ -19,21 +20,69 @@ Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 
 /products
 
-## **_Request_**
+**_Request_**
+Api-key: ComingSoon
 
 **_Response_**
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "910 Geist ekiden",
-    "stock": 10
-  },
-  {
-    "id": 2,
-    "name": "Adidas Samba",
-    "stock": 13
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "910 Geist ekiden",
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "name": "Adidas Samba",
+      "stock": 13
+    }
+  ]
+}
+```
+
+### Login
+
+/login
+
+**_request_**
+
+```json
+{ "username": "your username", "password": "your password" }
+```
+
+**_response_**
+
+```json
+{
+  "token": "{token}",
+  "customerId": "1",
+  "fullName": "fullname"
+}
+```
+
+### Login
+
+/cart/:productId
+
+**_request_**
+
+```json
+"Authorization": "Bearer {token}"
+```
+
+Api-key: ComingSoon
+
+**_response_**
+
+```json
+{
+  "data": {
+    "cartId": 1,
+    "customerId": 1,
+    "quantity": 1,
+    "productId": 1
   }
-]
+}
 ```
