@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const argon2 = require('argon2');
 const { cryptoKey } = require('../../config/app.conf');
+const emailSender = require('../../utils/emailSender');
 
 const prisma = new PrismaClient();
 
@@ -11,8 +12,6 @@ const register = async (req, res) => {
     const hashedPassword = await argon2.hash(String(password), {
       secret: Buffer.from(String(cryptoKey)),
     });
-
-    console.log('register', hashedPassword);
 
     const isUsernameExist = await prisma.customer.findUnique({
       where: {
@@ -44,14 +43,24 @@ const register = async (req, res) => {
       },
     });
 
-    const otp = '123456';
+    const otp = Math.floor(Math.random() * 899999) + 100000;
+    const hashOtp = await argon2.hash(String(otp), {
+      secret: Buffer.from(String(cryptoKey)),
+    });
+
     const newOtp = await prisma.otp.create({
       data: {
         email,
-        otp,
+        otp: hashOtp,
       },
     });
 
+    await emailSender({
+      email,
+      title: 'SportNation OTP Verification',
+      fullName,
+      otp,
+    });
     res
       .status(201)
       .send('Registration success, please verify the otp and check your email');
