@@ -25,10 +25,10 @@ model Product {
 model customer {
   customerId        Int      @id @default(autoincrement())
   fullName  String
-  address   String
-  email     String
+  address   String?
+  email     String  @unique
   phoneNumber String
-  username  String
+  username  String  @unique
   password  String
 }
 
@@ -37,4 +37,30 @@ model cart {
   customerId  Int
   quantity    Int
   productId   Int
+}
+
+model orderItem {
+  orderItemId Int @id @default(autoincrement())
+  productId   Int 
+  quantity    Int
+  subtotal    Float
+  orderId     Int
+}
+
+model order {
+  orderId      Int     @id @default(autoincrement())
+  orderDate DateTime
+  totalPrice Float
+  customerId Int
+  paymentId  Int
+  shipmentAmount Float
+}
+
+model payment {
+  paymentId   Int       @id @default(autoincrement())
+  amount      Float
+  paymentDate DateTime
+  paymentMethod String
+  status      String
+  customerId  Int
 }
