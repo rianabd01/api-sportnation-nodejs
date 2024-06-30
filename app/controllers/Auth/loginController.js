@@ -1,20 +1,27 @@
 const { PrismaClient } = require('@prisma/client');
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../../config/app.conf');
+const SHA256 = require('crypto-js/sha256');
 
+const { cryptoKey } = require('../../config/app.conf');
 const prisma = new PrismaClient();
 
 const login = async (req, res) => {
   const { username, password } = req.body;
+  const hashedPassword = SHA256(cryptoKey + password).toString();
 
   try {
-    const customer = await prisma.customer.findFirst({
+    const customer = await prisma.customer.findUnique({
       where: {
         username: username,
       },
     });
 
-    if (customer && customer.password === password) {
+    if (!customer) {
+      res.status(401).send('Username not registered');
+    }
+
+    if (customer.password === hashedPassword) {
       const token = jwt.sign({ customerId: customer.customerId }, jwtSecret, {
         expiresIn: '30d',
       });
@@ -24,7 +31,7 @@ const login = async (req, res) => {
         fullName: customer.fullName,
       });
     } else {
-      res.status(401).send('Invalid username or password');
+      res.status(401).send('Invalid password');
     }
   } catch (error) {
     console.log(error);
