@@ -30,6 +30,15 @@ model customer {
   phoneNumber String
   username  String  @unique
   password  String
+  isActive  Int? @default(0)
+  createdAt DateTime? @default(now())
+}
+
+model otp {
+  otpId Int @id @default(autoincrement())
+  email String
+  otp String
+  createdAt DateTime  @default(now())
 }
 
 model cart {
