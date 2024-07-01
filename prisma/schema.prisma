@@ -19,10 +19,12 @@ model Product {
   price       Int
   description String
   stockQuantity    Int
+
+  carts           Cart[]
 }
 
 
-model customer {
+model Customer {
   customerId        Int      @id @default(autoincrement())
   fullName  String
   address   String?
@@ -34,21 +36,23 @@ model customer {
   createdAt DateTime? @default(now())
 }
 
-model otp {
+model Otp {
   otpId Int @id @default(autoincrement())
   email String
   otp String
   createdAt DateTime  @default(now())
 }
 
-model cart {
+model Cart {
   cartId      Int     @id @default(autoincrement())
   customerId  Int
   quantity    Int
   productId   Int
+  
+  product     Product  @relation(fields: [productId], references: [productId])
 }
 
-model orderItem {
+model OrderItem {
   orderItemId Int @id @default(autoincrement())
   productId   Int 
   quantity    Int
@@ -56,16 +60,26 @@ model orderItem {
   orderId     Int
 }
 
-model order {
+model Order {
   orderId      Int     @id @default(autoincrement())
   orderDate DateTime
   totalPrice Float
   customerId Int
   paymentId  Int
-  shipmentAmount Float
+  shipmentId Int
+
+  shipment     Shipment  @relation(fields: [shipmentId], references: [shipmentId])
 }
 
-model payment {
+model Shipment {
+  shipmentId  Int   @id @default(autoincrement())
+  price       Int 
+  name        String
+
+  orders      Order[]
+}
+
+model Payment {
   paymentId   Int       @id @default(autoincrement())
   amount      Float
   paymentDate DateTime
