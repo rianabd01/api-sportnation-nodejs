@@ -2,6 +2,17 @@
 
 Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 
+### Features
+
+- Login using JWT Token
+- Customer Registration with nodemailer and argon2 hashing (OTP, Pass)
+- Re-Send OTP after 1 minutes
+- cron job every 02.00 am (Destroy OTP unverivied)
+
+### DEV NOTES
+
+- Can replace customer if isActive = false even email and user exist
+
 ### Requirements
 
 - Node v20.13.1
