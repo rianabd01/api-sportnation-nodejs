@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../config/app.conf');
 
 const authMiddleware = (req, res, next) => {
+  if (!req.header('Authorization')) {
+    res.status(400).send('Need Token');
+  }
   const token = req.header('Authorization').split(' ')[1];
 
   if (!token) {
@@ -13,7 +16,7 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (ex) {
-    res.status(400).json({ message: 'Invalid Token' });
+    res.status(400).send('Invalid Token');
   }
 };
 
