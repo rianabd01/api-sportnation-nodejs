@@ -52,38 +52,41 @@ model Cart {
   product     Product  @relation(fields: [productId], references: [productId])
 }
 
+model Payment {
+  paymentId   String       @id
+  amount      Float?
+  paymentDate DateTime?
+  paymentMethod String?
+  status      String?
+  customerId  Int
+  createdAt DateTime  @default(now())
+  
+}
+
+model Order {
+  orderId      String     @id
+  orderDate DateTime  @default(now())
+  totalPrice Float?
+  customerId Int
+  paymentId  String
+  shipmentId Int
+  createdAt DateTime  @default(now())
+
+  shipment     Shipment  @relation(fields: [shipmentId], references: [shipmentId])
+}
+
 model OrderItem {
   orderItemId Int @id @default(autoincrement())
   productId   Int 
   quantity    Int
   subtotal    Float
-  orderId     Int
-}
-
-model Order {
-  orderId      Int     @id @default(autoincrement())
-  orderDate DateTime
-  totalPrice Float
-  customerId Int
-  paymentId  Int
-  shipmentId Int
-
-  shipment     Shipment  @relation(fields: [shipmentId], references: [shipmentId])
+  orderId     String
 }
 
 model Shipment {
   shipmentId  Int   @id @default(autoincrement())
   price       Int 
   name        String
-
+  
   orders      Order[]
-}
-
-model Payment {
-  paymentId   Int       @id @default(autoincrement())
-  amount      Float
-  paymentDate DateTime
-  paymentMethod String
-  status      String
-  customerId  Int
 }
