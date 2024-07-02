@@ -44,6 +44,9 @@ importers:
       nodemailer:
         specifier: ^6.9.14
         version: 6.9.14
+      xendit-node:
+        specifier: ^5.0.0
+        version: 5.0.0
     devDependencies:
       eslint:
         specifier: 8.2.0
@@ -1151,6 +1154,10 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  xendit-node@5.0.0:
+    resolution: {integrity: sha512-/xRovF/ZA9vJ4DpxdjNvAyURvWRb2cROTAjNrqy7KSsMixxGsP+OaeBtUOnMJc98fvPNiESKSVz66b2iiDovIA==}
+    engines: {node: '>=18.0.0'}
 
 snapshots:
 
@@ -2389,3 +2396,5 @@ snapshots:
   word-wrap@1.2.5: {}
 
   wrappy@1.0.2: {}
+
+  xendit-node@5.0.0: {}
