@@ -9,7 +9,7 @@ const router = express.Router();
 // get products list
 router.get('/products', getProducts);
 // add to cart
-router.post('/cart/:productId', authMiddleware, cart);
+router.post('/cart/:id', authMiddleware, cart);
 // get cartItem
 router.get('/cart', authMiddleware, cartItems);
 
