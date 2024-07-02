@@ -9,17 +9,45 @@ const cart = async (req, res) => {
 
   const { productId } = req.params;
   try {
-    const addCart = await prisma.cart.create({
-      data: {
-        customerId: customerId,
-        productId: Number(productId),
-        quantity: 1,
+    const checkProduct = await prisma.product.findUnique({
+      where: {
+        productId,
       },
     });
 
-    res.status(201).json({ data: addCart });
+    const checkProductExist = await prisma.cart.findMany({
+      where: {
+        customerId,
+        productId: Number(productId),
+      },
+    });
+
+    if (checkProduct.stockQuantity - 1 <= 0) {
+      res.status(301).send('product is out of stock');
+    }
+
+    if (checkProductExist.length > 0) {
+      const existingCartItem = checkProductExist[0];
+      const addQuantity = await prisma.cart.update({
+        where: {
+          cartId: existingCartItem.cartId,
+        },
+        data: {
+          quantity: existingCartItem.quantity + 1,
+        },
+      });
+    } else {
+      const addCart = await prisma.cart.create({
+        data: {
+          customerId: customerId,
+          productId: Number(productId),
+          quantity: 1,
+        },
+      });
+    }
+    res.status(201).send('success add product to cart');
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    res.status(500).send('Internal server error');
   }
 };
 
