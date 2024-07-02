@@ -65,7 +65,7 @@ const order = async (req, res) => {
 
     res.status(201).send('order succesfully');
   } catch (error) {
-    console.log(error);
+    res.status(500).send('Internal server error');
   }
 };
 

@@ -36,7 +36,6 @@ const login = async (req, res) => {
       return res.status(401).send('Invalid password');
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).send('Internal server error');
   }
 };

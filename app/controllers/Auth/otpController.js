@@ -70,7 +70,7 @@ const otp = async (req, res) => {
       res.status(500).send('Invalid OTP');
     }
   } catch (error) {
-    console.log(error);
+    res.status(500).send('Internal server error');
   } finally {
     await prisma.$disconnect();
   }
