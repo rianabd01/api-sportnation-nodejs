@@ -17,13 +17,13 @@ app.use(helmet());
 
 // Import routes
 const appRoutes = require('./app/routes/App.routes');
-// const authRoutes = require('./app/routes/Auth.routes');
-// const dashboardRoutes = require('./app/routes/Dashboard.routes');
+const authRoutes = require('./app/routes/Auth.routes');
+const orderRoutes = require('./app/routes/Order.routes');
 
 // Use routes
 app.use('/', appRoutes);
-// app.use('/auth', authRoutes);
-// app.use('/dashboard', dashboardRoutes);
+app.use('/auth', authRoutes);
+app.use('/order', orderRoutes);
 
 const port = appConfig.port;
 app.listen(port, () => {
