@@ -1,16 +1,25 @@
 # API SportNation e-commerce
 
-Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
+Use Express js and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 
 ### Features
 
+- get product list, add to cart, order
 - Login using JWT Token
 - Customer Registration with nodemailer and argon2 hashing (Verify link, Pass)
-- cron job every 02.00 am (Destroy verify unverivied) => next work
+- rate limit with 100 request / 15 minutes
 
 ### DEV NOTES
 
-- Can replace customer if isActive = false even email and user exist
+**_next development_**
+
+- cron job every 02.00 am (Destroy verify-account data expired)
+- use midtrans payment gateway
+- find delivery service api
+- use rajaongkir api for receipt check
+- user who not verify the email account can't order
+- Caching GET list product every 10 minutes (save server payment)
+- CORS
 
 ### Requirements
 
@@ -26,7 +35,7 @@ Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 
 ### BASE URL: http://localhost:3456/
 
-## 1. Get products
+## 1. Get list products
 
 `GET /products`
 
