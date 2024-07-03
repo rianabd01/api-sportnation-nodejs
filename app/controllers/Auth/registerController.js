@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const argon2 = require('argon2');
+const { nanoid } = require('nanoid');
 const { cryptoKey } = require('../../config/app.conf');
 const emailSender = require('../../utils/emailSender');
 
@@ -43,23 +44,27 @@ const register = async (req, res) => {
       },
     });
 
-    const otp = Math.floor(Math.random() * 899999) + 100000;
-    const hashOtp = await argon2.hash(String(otp), {
+    const verifyToken = nanoid(20);
+    console.log(verifyToken);
+    // const otp = Math.floor(Math.random() * 899999) + 100000;
+    const hashToken = await argon2.hash(String(verifyToken), {
       secret: Buffer.from(String(cryptoKey)),
     });
 
-    const newOtp = await prisma.otp.create({
+    const newVerifyToken = await prisma.verify_account.create({
       data: {
         email,
-        otp: hashOtp,
+        token: hashToken,
       },
     });
 
+    const verifyLink = `http://localhost:3456/auth/verify-account?verifyToken=${verifyToken}&userEmail=${email}`;
+    console.log(verifyLink);
     await emailSender({
       email,
-      title: 'SportNation OTP Verification',
+      title: 'SportNation Email Verification',
       fullName,
-      otp,
+      link: verifyLink,
     });
     res
       .status(201)

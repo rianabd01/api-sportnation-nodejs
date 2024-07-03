@@ -1,4 +1,4 @@
-module.exports = function generateOtpEmail(fullName, otp) {
+module.exports = function generateOtpEmail(fullName, link) {
   return `<!DOCTYPE html>
   <html lang="en">
     <head>
@@ -54,7 +54,7 @@ module.exports = function generateOtpEmail(fullName, otp) {
                   color: #1f1f1f;
                 "
               >
-                Your OTP
+                Your Verification Link
               </h1>
               <p
                 style="
@@ -64,7 +64,7 @@ module.exports = function generateOtpEmail(fullName, otp) {
                   font-weight: 500;
                 "
               >
-                Hey ${fullName},
+                Hello ${fullName},
               </p>
               <p
                 style="
@@ -74,24 +74,23 @@ module.exports = function generateOtpEmail(fullName, otp) {
                   letter-spacing: 0.56px;
                 "
               >
-                Thank you for register to SportNation. Use the following OTP
-                to complete the procedure to change your email address. OTP is
+                Thank you for register to SportNation. Use the following Verify link
+                to complete the procedure to change your email address. Link is
                 valid for
                 <span style="font-weight: 600; color: #1f1f1f;">5 minutes</span>.
-                Do not share this code with others, including SportNation
+                Do not share this link with others, including SportNation
                 employees.
               </p>
               <p
                 style="
                   margin: 0;
                   margin-top: 60px;
-                  font-size: 40px;
-                  font-weight: 600;
-                  letter-spacing: 25px;
+                  font-size: 10px;
+                  font-weight: 400;
                   color: #ba3d4f;
                 "
               >
-                ${otp}
+                <a href="${link}">Click this link</a>
               </p>
             </div>
           </div>

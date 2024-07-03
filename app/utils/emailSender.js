@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const generateOtpEmail = require('../../src/otpBodyEmail');
 const { emailService, emailPassword } = require('../config/app.conf');
 
-const emailSender = async ({ email, title, fullName, otp }) => {
+const emailSender = async ({ email, title, fullName, link }) => {
   try {
     // Create a Transporter to send emails
     let transporter = nodemailer.createTransport({
@@ -18,7 +18,7 @@ const emailSender = async ({ email, title, fullName, otp }) => {
       from: 'SportNation',
       to: email,
       subject: title,
-      html: generateOtpEmail(fullName, otp),
+      html: generateOtpEmail(fullName, link),
     });
     return info;
   } catch (error) {

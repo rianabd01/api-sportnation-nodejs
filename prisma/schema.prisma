@@ -36,10 +36,10 @@ model Customer {
   createdAt DateTime? @default(now())
 }
 
-model Otp {
-  otpId Int @id @default(autoincrement())
+model verify_account {
+  verifyId Int @id @default(autoincrement())
   email String
-  otp String
+  token String
   createdAt DateTime  @default(now())
 }
 
