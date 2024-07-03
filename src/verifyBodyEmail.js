@@ -1,4 +1,4 @@
-module.exports = function generateOtpEmail(fullName, link) {
+const verifyEmail = (fullName, link) => {
   return `<!DOCTYPE html>
   <html lang="en">
     <head>
@@ -131,3 +131,5 @@ module.exports = function generateOtpEmail(fullName, link) {
   
     `;
 };
+
+module.exports = verifyEmail;

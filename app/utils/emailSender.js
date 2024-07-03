@@ -1,6 +1,6 @@
 // utils/mailSender.js
 const nodemailer = require('nodemailer');
-const generateOtpEmail = require('../../src/otpBodyEmail');
+const verifyEmail = require('../../src/verifyBodyEmail');
 const { emailService, emailPassword } = require('../config/app.conf');
 
 const emailSender = async ({ email, title, fullName, link }) => {
@@ -18,7 +18,7 @@ const emailSender = async ({ email, title, fullName, link }) => {
       from: 'SportNation',
       to: email,
       subject: title,
-      html: generateOtpEmail(fullName, link),
+      html: verifyEmail(fullName, link),
     });
     return info;
   } catch (error) {
