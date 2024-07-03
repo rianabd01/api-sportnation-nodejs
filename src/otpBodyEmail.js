@@ -85,7 +85,7 @@ module.exports = function generateOtpEmail(fullName, link) {
                 style="
                   margin: 0;
                   margin-top: 60px;
-                  font-size: 10px;
+                  font-size: 16px;
                   font-weight: 400;
                   color: #ba3d4f;
                 "

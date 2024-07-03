@@ -70,8 +70,7 @@ const verifyAccount = async (req, res) => {
       res.status(500).send('Invalid OTP');
     }
   } catch (error) {
-    console.log(verifyToken, userEmail);
-    res.status(500).send(error || 'Internal server error');
+    res.status(500).send(error.message || 'Internal server error');
   } finally {
     await prisma.$disconnect();
   }
