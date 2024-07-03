@@ -16,25 +16,26 @@ const login = async (req, res) => {
     });
 
     if (!customer) {
-      return res.status(401).send('Username not registered');
+      return res.status(404).send('username not found');
     }
 
     const isPasswordValid = await argon2.verify(customer.password, password, {
       secret: Buffer.from(String(cryptoKey)),
     });
 
-    if (isPasswordValid) {
-      const token = jwt.sign({ customerId: customer.customerId }, jwtSecret, {
-        expiresIn: '30d',
-      });
-      return res.status(200).json({
-        token,
-        customerId: customer.customerId,
-        fullName: customer.fullName,
-      });
-    } else {
+    if (!isPasswordValid) {
       return res.status(401).send('Invalid password');
     }
+
+    const token = jwt.sign({ customerId: customer.customerId }, jwtSecret, {
+      expiresIn: '30d',
+    });
+
+    return res.status(200).json({
+      token,
+      customerId: customer.customerId,
+      fullName: customer.fullName,
+    });
   } catch (error) {
     return res.status(500).send('Internal server error');
   }

@@ -9,9 +9,9 @@ const verifyAccount = async (req, res) => {
 
   try {
     if (!verifyToken || !userEmail) {
-      res.status(404).send('data not found');
+      return res.status(404).send('data not found');
     }
-    // Validation if OTP not found
+    // Validation if token not found
     const findToken = await prisma.verify_account.findMany({
       where: {
         email: userEmail,
@@ -25,52 +25,51 @@ const verifyAccount = async (req, res) => {
     const verifyData = findToken[0];
 
     if (!verifyData) {
-      res.status(404).send('data not found');
+      return res.status(404).send('data not found');
     }
 
-    // Validation 5 minutes
-    const dateDifference =
-      new Date() - new Date(verifyData.createdAt) >= 5 * 60 * 1000;
+    // Validation link max 5 minutes
+    const isFiveMinutes =
+      new Date() - new Date(verifyData.createdAt) <= 5 * 60 * 1000;
 
-    if (dateDifference) {
-      throw new Error('Verify link is expired');
+    if (!isFiveMinutes) {
+      return res.status(401).send('link is expired');
     }
 
-    // Validation if OTP not match
+    // Validation if token not match
     const isTokenValid = await argon2.verify(verifyData.token, verifyToken, {
       secret: Buffer.from(String(cryptoKey)),
     });
 
     if (!isTokenValid) {
-      res.status(401).send('Wrong token');
+      return res.status(401).send('wrong link');
     }
-    if (isTokenValid) {
-      const userVerify = await prisma.customer.update({
-        where: {
-          email: userEmail,
-        },
-        data: {
-          isActive: 1,
-        },
-      });
 
-      // Validation if update customer table is failed
-      if (!userVerify) {
-        throw new Error('verification failed');
-      }
+    // Update account status
+    const userVerify = await prisma.customer.update({
+      where: {
+        email: userEmail,
+      },
+      data: {
+        isActive: 1,
+      },
+    });
 
-      const destroyToken = await prisma.verify_account.delete({
-        where: {
-          verifyId: verifyData.verifyId,
-        },
-      });
-
-      res.status(201).send('OTP verification success');
-    } else {
-      res.status(500).send('Invalid OTP');
+    // Validation if update account failed
+    if (!userVerify) {
+      throw new Error('verification failed');
     }
+
+    // remove varified token
+    const destroyToken = await prisma.verify_account.delete({
+      where: {
+        verifyId: verifyData.verifyId,
+      },
+    });
+
+    return res.status(200).send('email verification success');
   } catch (error) {
-    res.status(500).send(error.message || 'Internal server error');
+    return res.status(500).send(error.message || 'Internal server error');
   } finally {
     await prisma.$disconnect();
   }
