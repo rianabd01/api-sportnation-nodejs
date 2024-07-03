@@ -5,8 +5,8 @@ Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 ### Features
 
 - Login using JWT Token
-- Customer Registration with nodemailer and argon2 hashing (OTP, Pass)
-- cron job every 02.00 am (Destroy OTP unverivied) => next work
+- Customer Registration with nodemailer and argon2 hashing (Verify link, Pass)
+- cron job every 02.00 am (Destroy verify unverivied) => next work
 
 ### DEV NOTES
 
@@ -26,11 +26,12 @@ Using Expressjs and Prisma ORM (THIS API IS UNDER DEVELOPMENT)
 
 ### BASE URL: http://localhost:3456/
 
-### Get products
+## 1. Get products
 
-/products
+`GET /products`
 
 **_Request_**
+
 Api-key: ComingSoon
 
 **_query_**
@@ -39,7 +40,8 @@ Api-key: ComingSoon
 - range=100000-300000
 
 **_example_**
-http://localhost:3456/products?sortBy=expensive&range=100000-10000000
+
+`http://localhost:3456/products?sortBy=expensive&range=100000-10000000`
 
 **_Response_**
 
@@ -64,9 +66,10 @@ http://localhost:3456/products?sortBy=expensive&range=100000-10000000
 }
 ```
 
-### Register
+## 2. Register
 
-/auth/register
+`POST /auth/register`
+
 **_request_**
 
 ```json
@@ -85,27 +88,30 @@ http://localhost:3456/products?sortBy=expensive&range=100000-10000000
 Registration success, please verify the otp and check your email
 ```
 
-### OTP
+## 3. Verify link
 
-/auth/otp
+`GET /auth/verify-link`
+
 **_request_**
 
+**_query_**
+
 ```json
-{
-  "email": "email@gmail.com",
-  "otpVal": "112233"
-}
+verifyToken = token,
+userEmail = email@email.com
 ```
+
+**_example_**
+
+`http://localhost:3456/auth/verify-account?verifyToken=kLoR22oFsyKD3YzYOp_9&userEmail=email@email.com`
 
 **_response_**
 
-```json
-OTP verification success
-```
+`Verification success`
 
-### Login
+## 4. Login
 
-auth/login
+`POST /auth/login`
 
 **_request_**
 
@@ -123,15 +129,13 @@ auth/login
 }
 ```
 
-### Add to cart
+## 5. Add to cart
 
-/cart/:id
+`POST /cart/:id`
 
 **_request_**
 
-```json
-"Authorization": "Bearer {token}"
-```
+`"Authorization": "Bearer {token}"`
 
 Api-key: ComingSoon
 
@@ -141,9 +145,9 @@ Api-key: ComingSoon
 success add product to cart
 ```
 
-### Order
+## 6. Order
 
-/order
+POST /order
 
 **_request_**
 
@@ -174,6 +178,4 @@ Api-key: ComingSoon
 
 **_response_**
 
-```json
-order succesfully
-```
+`order succesfully`
